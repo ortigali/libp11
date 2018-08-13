@@ -31,6 +31,11 @@
 #include <string.h>
 #include <limits.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#define popen _popen
+#define pclose _pclose
+#endif
+
 static int hex_to_bin(ENGINE_CTX *ctx,
 		const char *in, unsigned char *out, size_t *outlen)
 {
@@ -289,7 +294,7 @@ static int read_from_command(ENGINE_CTX *ctx,
 {
 	FILE *fp;
 
-	fp = _popen(cmd, "r");
+	fp = popen(cmd, "r");
 	if (fp == NULL) {
 		ctx_log(ctx, 0, "Could not run command %s\n", cmd);
 		return 0;
@@ -300,7 +305,7 @@ static int read_from_command(ENGINE_CTX *ctx,
 		*field_len = 0;
 	}
 
-	_pclose(fp);
+	pclose(fp);
 	return 1;
 }
 
