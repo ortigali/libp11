@@ -289,7 +289,7 @@ static int read_from_command(ENGINE_CTX *ctx,
 {
 	FILE *fp;
 
-	fp = popen(cmd, "r");
+	fp = _popen(cmd, "r");
 	if (fp == NULL) {
 		ctx_log(ctx, 0, "Could not run command %s\n", cmd);
 		return 0;
@@ -300,7 +300,7 @@ static int read_from_command(ENGINE_CTX *ctx,
 		*field_len = 0;
 	}
 
-	pclose(fp);
+	_pclose(fp);
 	return 1;
 }
 
